@@ -14,5 +14,30 @@ I modified Asher Glick's code to include
 - Randomly select max animation time (animationMax).
 - Adjust the speed of individual animations (animationSpeed) for a more consistent visual experience
 
+https://www.youtube.com/watch?v=0nbVw5vNdXA
+
+
+**Vertical layer offset fix**
+I made a mistake in the wiring resulted in the animation being offset downwards by two layers. 
+Fix curtesy of WaLkeR in some long forgotten comment train. 
+
+In function drawLed of cubeplex.h look for the line:
+
+void drawLed(int color, int brightness, int x, int y, int z) {
+
+Add the following code (uncomment as required)
+  /********************* Layer offset fix *********************/
+  /******** Move the layers upward one space - WaLkeR  ********/
+  // z++;
+  // If (z==4) z = 0;
+
+  /****** Move the layers upward two spaces - chopsuwe ********/
+  /********** Fix for an error in my wiring *******************/  
+  // z++;
+  // z++;
+  // if (z==4) z = 0;
+  // if (z==5) z = 1;
+  /****************** Layer offset fix - end ******************/
+
 
 
