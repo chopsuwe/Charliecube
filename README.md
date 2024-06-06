@@ -19,7 +19,7 @@ https://www.youtube.com/watch?v=0nbVw5vNdXA
 **Bug fix - animation fails to advance**
 A bug in the original software occasionally prevents the cube from advancing to the next animation. This is most likely to occur when a complex animation is running and the workload is high. Two bug fixes have been posted in on Asher Glick's GitHub, I haven't done any testing to determine which solution is best.
 
-_My Solution:_ The original codes checks to see if animationTimer is *equal* to animationMax and sets the flag to move to the next animation. High workload can cause the processor to miss the point when the variable are qequal. From that point onward the the value of animationTimer will always be greater than (not equal to) animationMax so the flag will never be set.
+My Solution: The original code checks to see if animationTimer is *equal* to animationMax and sets the flag to move to the next animation. High workload can cause the processor to miss the point when the variables are equal. From that point onward the the value of animationTimer will always be greater than (not equal to) animationMax so the flag will never be set.
 
 The solution is to change the line of code to evaluate if animationTimer is *greater than or equal to* animationMax.
 
