@@ -54,6 +54,7 @@ In function drawLed of cubeplex.h look for the line:
 void drawLed(int color, int brightness, int x, int y, int z) {
 
 Add the following code (uncomment as required)
+<code>
   /********************* Layer offset fix *********************/
   /******** Move the layers upward one space - WaLkeR  ********/
   // z++;
@@ -66,6 +67,7 @@ Add the following code (uncomment as required)
   // if (z==4) z = 0;
   // if (z==5) z = 1;
   /****************** Layer offset fix - end ******************/
+  </code>
 
 
 
