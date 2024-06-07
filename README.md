@@ -1,30 +1,39 @@
 Current version: Unmodified copy of Asher Glick's master branch. 
 
 Coming soon: 
-The charliecube is a 4x4x4 RGB LED cube that uses Charlie Plexing to eliminate the need for additional shift regesters, buffers and the like. This dramatically simplifies construction and reduces parts count. The cube only requires a single Arduino board with 16 digital output pins. 
 
-I modified Asher Glick's code to include
-- Bug fix where the cube fails to progress to the next animation.
-- Vertical layer offset to fix my wiring mistake. 
-- Additional animations by Fishofgold https://github.com/Fishofgold/4x4x4-RGB-LED-Cube-  
+# The charliecube is a minumal parts count 4x4x4 RGB LED cube. 
+It uses Charlie Plexing to eliminate the need for the shift regesters, buffers and other parts in traditinal designs. This dramatically simplifies construction and reduces parts count. The only parts required are a single Arduino board with 16 digital output pins and the LEDS. Original code and build instructions curtesy of Asher Glick at https://aglick.com/charliecube.html. 
 
-- Randomly select next animation
-- Randomly select animation colour
-- Randomly select animation speed
-- Randomly select max animation time (animationMax).
-- Adjust the speed of individual animations (animationSpeed) for a more consistent visual experience
+# Changes and Improvements to the original code
 
-https://www.youtube.com/watch?v=0nbVw5vNdXA
+- Bug fix - failure to progress to the next animation.
+- Wiring fix - Vertical layer offset to fix my wiring mistake (optional).
+- Additional animations - by Fishofgold at https://github.com/Fishofgold/4x4x4-RGB-LED-Cube-
 
-**Bug fix - animation fails to advance**
-A bug in the original software occasionally prevents the cube from advancing to the next animation. This is most likely to occur when a complex animation is running and the workload is high. Two bug fixes have been posted in on Asher Glick's GitHub, I haven't done any testing to determine which solution is best.
+**Visual improvements**
+- Randomly select the animation colour.
+- Randomly select the animation speed.
+- Randomly select the next animation.
+- Randomly select the max animation time before changing to another pattern.
+- Better speed consistency across all animations.
 
-My Solution: The original code checks to see if animationTimer is *equal* to animationMax and sets the flag to move to the next animation. High workload can cause the processor to miss the point when the variables are equal. From that point onward the the value of animationTimer will always be greater than (not equal to) animationMax so the flag will never be set.
+See comments in the code for more detail.
+
+Short video of my cube in action https://www.youtube.com/watch?v=0nbVw5vNdXA
+
+
+## Bug fix - Failure to advance to the next anumation
+Occasionally the cube fails to advance to the next animation. This is most likely to occur when a complex animation is running and the processor workload is high. Two bug fixes have been posted in on Asher Glick's GitHub, I haven't done any testing to determine which solution is best, although I suspect mine tackels the root of the th problem.
+
+### My Solution - greater than or equal to:
+The original code checks to see if animationTimer is *equal* to animationMax and sets the flag to move to the next animation. High workload can cause the processor to miss the point when the variables are equal. From that point onward the the value of animationTimer will always be greater than (not equal to) animationMax so the flag will never be set.
 
 The solution is to change the line of code to evaluate if animationTimer is *greater than or equal to* animationMax.
 
 The corrected code is:
 
+```
 ISR(TIMER1_OVF_vect) {
   animationTimer++;
   if (animationTimer >= animationMax) {   // change the equal == to greater than or equal to >= 
@@ -32,29 +41,32 @@ ISR(TIMER1_OVF_vect) {
     animationTimer=0;
   }
 }
+```
 
-Alternative solution from simeon2020: The compiler treats continuePattern as a normal variable when it should be volatile. Volatile causes the compiler to generate code that always reads the variable from RAM and does not "cache" the last read value in a register. Volatile should ALWAYS be used on any variable that can be modified an interrupt, or any external source. In our case it is the TIMER1_OVF_vect() ISR that is updating the 
+### simeon2020's alternative solution - volatile variable: 
+The compiler treats continuePattern as a normal variable when it should be volatile. Volatile causes the compiler to generate code that always reads the variable from RAM and does not "cache" the last read value in a register. Volatile should ALWAYS be used on any variable that can be modified an interrupt, or any external source. In our case it is the TIMER1_OVF_vect() ISR that is updating the 
 
-Change the line in cubeplex.h that reads:
+Find the line in cubeplex.h that reads:
 
-bool continuePattern = false;
+`bool continuePattern = false;`
 
-should be changed to:
+Change it to:
 
-volatile bool continuePattern = false;
+`volatile bool continuePattern = false;`
 
 
 
-**Wiring fix - Vertical layer offset**
+## Wiring fix - Vertical layer offset
 I made a mistake in the wiring resulted in the animation being offset downwards by two layers. 
-Fix curtesy of WaLkeR in some long forgotten comment train. 
+This fix curtesy of WaLkeR from some long forgotten comment train. 
 
-In function drawLed of cubeplex.h look for the line:
+In function drawLed of cubeplex.h, find the line:
 
-void drawLed(int color, int brightness, int x, int y, int z) {
+`void drawLed(int color, int brightness, int x, int y, int z) {`
 
-Add the following code (uncomment as required)
-<code>
+Directly below that line, add the following code (uncomment as required)
+
+```
   /********************* Layer offset fix *********************/
   /******** Move the layers upward one space - WaLkeR  ********/
   // z++;
@@ -67,7 +79,6 @@ Add the following code (uncomment as required)
   // if (z==4) z = 0;
   // if (z==5) z = 1;
   /****************** Layer offset fix - end ******************/
-  </code>
-
+```
 
 
