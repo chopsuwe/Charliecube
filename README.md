@@ -2,8 +2,8 @@ Current version: Unmodified copy of Asher Glick's master branch.
 
 Coming soon: 
 
-# The charliecube is a minumal parts count 4x4x4 RGB LED cube. 
-It uses Charlie Plexing to eliminate the need for the shift regesters, buffers and other parts in traditinal designs. This dramatically simplifies construction and reduces parts count. The only parts required are a single Arduino board with 16 digital output pins and the LEDS. Original code and build instructions curtesy of Asher Glick at https://aglick.com/charliecube.html. 
+# The charliecube is a minimal parts count 4x4x4 RGB LED cube. 
+It uses Charlie Plexing to eliminate the need for the shift registers, buffers and other parts in traditional designs. This dramatically simplifies construction and reduces parts count. The only parts required are a single Arduino board with 16 digital output pins and the LEDS. Original code and build instructions curtsey of Asher Glick at https://aglick.com/charliecube.html. 
 
 # Changes and Improvements to the original code
 
@@ -24,10 +24,10 @@ Short video of my cube in action https://www.youtube.com/watch?v=0nbVw5vNdXA
 
 
 ## Bug fix - Failure to advance to the next anumation
-Occasionally the cube fails to advance to the next animation. This is most likely to occur when a complex animation is running and the processor workload is high. Two bug fixes have been posted in on Asher Glick's GitHub, I haven't done any testing to determine which solution is best, although I suspect mine tackels the root of the th problem.
+Occasionally the cube fails to advance to the next animation. This is most likely to occur when a complex animation is running and the processor workload is high. Two bug fixes have been posted in on Asher Glick's GitHub, I haven't done any testing to determine which solution is best, although I suspect mine tackles the root of the the problem.
 
 ### My Solution - greater than or equal to:
-The original code checks to see if animationTimer is *equal* to animationMax and sets the flag to move to the next animation. High workload can cause the processor to miss the point when the variables are equal. From that point onward the the value of animationTimer will always be greater than (not equal to) animationMax so the flag will never be set.
+The original code checks to see if animationTimer is *equal* to animationMax and sets the flag to move to the next animation. High workload can cause the processor to miss the point when the variables are equal. From that point onward the value of animationTimer will always be greater than (not equal to) animationMax so the flag will never be set.
 
 The solution is to change the line of code to evaluate if animationTimer is *greater than or equal to* animationMax.
 
@@ -58,7 +58,7 @@ Change it to:
 
 ## Wiring fix - Vertical layer offset
 I made a mistake in the wiring resulted in the animation being offset downwards by two layers. 
-This fix curtesy of WaLkeR from some long forgotten comment train. 
+This fix curtsey of WaLkeR from a long forgotten comment train. 
 
 In function drawLed of cubeplex.h, find the line:
 
