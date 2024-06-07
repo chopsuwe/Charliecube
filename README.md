@@ -11,7 +11,7 @@ It uses Charlie Plexing to eliminate the need for the shift registers, buffers a
 - Wiring fix - Vertical layer offset to fix my wiring mistake (optional).
 - Additional animations - by Fishofgold at https://github.com/Fishofgold/4x4x4-RGB-LED-Cube-
 
-**Visual improvements**
+**Visual improvements** (See comments in the code for more detail).
 - Randomly select the animation colour.
 - Randomly select the animation speed.
 - Randomly select the next animation.
